@@ -1,0 +1,610 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Our Anniversary | Vasu & Claire</title>
+    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;500;600;700&family=Sacramento&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-pink: #fff0f3;
+            --card-pink: #fff5f7;
+            --pastel-rose: #ffccd5;
+            --deep-rose: #ffb3c1;
+            --accent-pink: #ff4d6d;
+            --text-dark: #59405c;
+            --text-light: #8c6a8f;
+            --white: #ffffff;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Quicksand', sans-serif;
+            background-color: var(--bg-pink);
+            color: var(--text-dark);
+            min-height: 100vh;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        /* Background Stars & Hearts */
+        .bg-decorations {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+            overflow: hidden;
+        }
+
+        .star, .heart {
+            position: absolute;
+            opacity: 0.4;
+            animation: floatSlow 6s ease-in-out infinite alternate;
+        }
+
+        .star { color: #ffb3c1; font-size: 1.2rem; }
+        .heart { color: #ff4d6d; font-size: 1rem; }
+
+        @keyframes floatSlow {
+            0% { transform: translateY(0px) rotate(0deg); }
+            100% { transform: translateY(-15px) rotate(10deg); }
+        }
+
+        /* Page Layout Container */
+        .page-container {
+            position: relative;
+            z-index: 1;
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 40px 20px;
+            display: none;
+            animation: fadeIn 0.5s ease forwards;
+        }
+
+        .page-container.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Navigation / Back Button */
+        .back-btn {
+            background: var(--white);
+            border: 2px solid var(--pastel-rose);
+            color: var(--text-dark);
+            padding: 8px 18px;
+            border-radius: 50px;
+            font-family: 'Quicksand', sans-serif;
+            font-weight: 600;
+            cursor: pointer;
+            box-shadow: 0 4px 10px rgba(255, 179, 193, 0.2);
+            transition: all 0.2s ease;
+            margin-bottom: 30px;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .back-btn:hover {
+            background: var(--pastel-rose);
+            transform: translateY(-2px);
+        }
+
+        /* Home Page Styles */
+        #home-page {
+            text-align: center;
+            padding-top: 60px;
+        }
+
+        .home-title {
+            font-family: 'Sacramento', cursive;
+            font-size: 4rem;
+            color: var(--accent-pink);
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(255, 77, 109, 0.1);
+        }
+
+        .home-subtitle {
+            font-size: 1.2rem;
+            color: var(--text-light);
+            margin-bottom: 50px;
+            font-weight: 500;
+        }
+
+        .nav-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 20px;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .nav-card {
+            background: var(--white);
+            border: 3px solid var(--pastel-rose);
+            border-radius: 24px;
+            padding: 25px;
+            text-align: center;
+            cursor: pointer;
+            box-shadow: 0 8px 20px rgba(255, 179, 193, 0.25);
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        .nav-card:hover {
+            transform: translateY(-5px) scale(1.02);
+            border-color: var(--accent-pink);
+            box-shadow: 0 12px 25px rgba(255, 77, 109, 0.3);
+        }
+
+        .nav-card h3 {
+            font-size: 1.4rem;
+            color: var(--text-dark);
+            margin-bottom: 8px;
+        }
+
+        .nav-card p {
+            font-size: 0.95rem;
+            color: var(--text-light);
+        }
+
+        /* Page Titles */
+        .page-header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .page-header h2 {
+            font-family: 'Sacramento', cursive;
+            font-size: 3.5rem;
+            color: var(--accent-pink);
+        }
+
+        .page-header p {
+            color: var(--text-light);
+            font-size: 1.1rem;
+        }
+
+        /* Polaroid Gallery Styles */
+        .polaroid-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 30px;
+            justify-items: center;
+        }
+
+        .polaroid {
+            background: var(--white);
+            padding: 15px 15px 25px 15px;
+            border-radius: 12px;
+            box-shadow: 0 10px 25px rgba(89, 64, 92, 0.12);
+            width: 100%;
+            max-width: 280px;
+            transition: transform 0.3s ease;
+        }
+
+        .polaroid:nth-child(odd) { transform: rotate(-2deg); }
+        .polaroid:nth-child(even) { transform: rotate(2deg); }
+        .polaroid:hover { transform: translateY(-5px) rotate(0deg) scale(1.03); }
+
+        .polaroid-img-container {
+            width: 100%;
+            height: 220px;
+            background: #fce8ec;
+            border-radius: 6px;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .polaroid img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .polaroid-caption {
+            text-align: center;
+            margin-top: 15px;
+            font-family: 'Sacramento', cursive;
+            font-size: 1.8rem;
+            color: var(--text-dark);
+        }
+
+        /* Carousel Styles */
+        .carousel-wrapper {
+            background: var(--white);
+            border-radius: 24px;
+            padding: 30px;
+            box-shadow: 0 10px 25px rgba(255, 179, 193, 0.25);
+            text-align: center;
+            max-width: 550px;
+            margin: 0 auto;
+            border: 3px solid var(--pastel-rose);
+        }
+
+        .carousel-container {
+            position: relative;
+            width: 100%;
+            height: 380px;
+            border-radius: 16px;
+            overflow: hidden;
+            background: #fce8ec;
+            margin-bottom: 20px;
+        }
+
+        .carousel-slide {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0;
+            transition: opacity 0.5s ease-in-out;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .carousel-slide.active {
+            opacity: 1;
+        }
+
+        .carousel-slide img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .carousel-btn {
+            background: var(--accent-pink);
+            color: var(--white);
+            border: none;
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            font-size: 1.2rem;
+            cursor: pointer;
+            box-shadow: 0 4px 10px rgba(255, 77, 109, 0.3);
+            transition: all 0.2s ease;
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            z-index: 10;
+        }
+
+        .carousel-btn:hover {
+            background: #e63956;
+            transform: translateY(-50%) scale(1.1);
+        }
+
+        .prev-btn { left: 15px; }
+        .next-btn { right: 15px; }
+
+        .carousel-caption {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: var(--text-dark);
+            margin-top: 10px;
+        }
+
+        .carousel-counter {
+            font-size: 0.9rem;
+            color: var(--text-light);
+            margin-top: 5px;
+        }
+
+        /* Call History Timeline Styles */
+        .timeline {
+            position: relative;
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px 0;
+        }
+
+        .timeline::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            left: 50%;
+            width: 4px;
+            background: var(--pastel-rose);
+            transform: translateX(-50%);
+            border-radius: 2px;
+        }
+
+        .timeline-item {
+            position: relative;
+            margin-bottom: 20px;
+            width: 50%;
+            padding-right: 30px;
+            box-sizing: border-box;
+        }
+
+        .timeline-item:nth-child(even) {
+            margin-left: 50%;
+            padding-right: 0;
+            padding-left: 30px;
+        }
+
+        .timeline-content {
+            background: var(--white);
+            padding: 15px 20px;
+            border-radius: 16px;
+            box-shadow: 0 4px 15px rgba(255, 179, 193, 0.2);
+            border: 2px solid var(--pastel-rose);
+            position: relative;
+        }
+
+        .timeline-content h3 {
+            font-size: 1.1rem;
+            color: var(--accent-pink);
+            margin-bottom: 5px;
+        }
+
+        .timeline-content p {
+            font-size: 0.95rem;
+            color: var(--text-dark);
+            font-weight: 500;
+        }
+
+        .timeline-dot {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            right: -11px;
+            width: 18px;
+            height: 18px;
+            background: var(--accent-pink);
+            border: 3px solid var(--white);
+            border-radius: 50%;
+            box-shadow: 0 0 0 2px var(--pastel-rose);
+        }
+
+        .timeline-item:nth-child(even) .timeline-dot {
+            right: auto;
+            left: -11px;
+        }
+
+        @media (max-width: 600px) {
+            .timeline::before { left: 20px; }
+            .timeline-item { width: 100%; padding-left: 50px; padding-right: 0; margin-left: 0 !important; }
+            .timeline-item:nth-child(even) .timeline-dot { left: 11px; }
+            .timeline-dot { left: 11px; right: auto; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Non-overlapping Background Stars and Hearts -->
+    <div class="bg-decorations">
+        <span class="star" style="top: 5%; left: 3%;">★</span>
+        <span class="heart" style="top: 15%; right: 4%;">♥</span>
+        <span class="star" style="top: 35%; left: 2%;">★</span>
+        <span class="heart" style="top: 55%; right: 3%;">♥</span>
+        <span class="star" style="top: 75%; left: 4%;">★</span>
+        <span class="heart" style="top: 88%; right: 5%;">♥</span>
+        <span class="star" style="top: 92%; left: 6%;">★</span>
+    </div>
+
+    <!-- HOME PAGE -->
+    <div id="home-page" class="page-container active">
+        <h1 class="home-title">Happy Anniversary</h1>
+        <p class="home-subtitle">To my absolute everything, Claire ❤️</p>
+        
+        <div class="nav-grid">
+            <div class="nav-card" onclick="switchPage('wifey-page')">
+                <h3>My Wifey</h3>
+                <p>10 Polaroid memories of my gorgeous girl</p>
+            </div>
+            <div class="nav-card" onclick="switchPage('vasu-page')">
+                <h3>Your Hubby: Vasu</h3>
+                <p>10 snapshots of your favorite guy</p>
+            </div>
+            <div class="nav-card" onclick="switchPage('buddy-page')">
+                <h3>Buddy</h3>
+                <p>10 photos of our favorite little best friend</p>
+            </div>
+            <div class="nav-card" onclick="switchPage('history-page')">
+                <h3>Call History</h3>
+                <p>Our late-night talks & sweet milestones</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- PAGE 1: MY WIFEY (10 Photos) -->
+    <div id="wifey-page" class="page-container">
+        <button class="back-btn" onclick="switchPage('home-page')">← Back to Hub</button>
+        <div class="page-header">
+            <h2>My Wifey</h2>
+            <p>The most beautiful girl in the world ✨</p>
+        </div>
+        <div class="polaroid-grid">
+            <div class="polaroid"><div class="polaroid-img-container"><img src="claire1.jpg" alt="Claire 1" onerror="this.src='https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=600&q=80'"></div><div class="polaroid-caption">Gorgeous</div></div>
+            <div class="polaroid"><div class="polaroid-img-container"><img src="claire2.jpg" alt="Claire 2" onerror="this.src='https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=600&q=80'"></div><div class="polaroid-caption">My Love</div></div>
+            <div class="polaroid"><div class="polaroid-img-container"><img src="claire3.jpg" alt="Claire 3" onerror="this.src='https://images.unsplash.com/photo-1524504388940-b1c1722653e1?auto=format&fit=crop&w=600&q=80'"></div><div class="polaroid-caption">So Pretty</div></div>
+            <div class="polaroid"><div class="polaroid-img-container"><img src="claire4.jpg" alt="Claire 4" onerror="this.src='https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=600&q=80'"></div><div class="polaroid-caption">My Wifey</div></div>
+            <div class="polaroid"><div class="polaroid-img-container"><img src="claire5.jpg" alt="Claire 5" onerror="this.src='https://images.unsplash.com/photo-1529626455594-4ff0802cfb7e?auto=format&fit=crop&w=600&q=80'"></div><div class="polaroid-caption">Angel</div></div>
+            <div class="polaroid"><div class="polaroid-img-container"><img src="claire6.jpg" alt="Claire 6" onerror="this.src='https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=600&q=80'"></div><div class="polaroid-caption">Stunning</div></div>
+            <div class="polaroid"><div class="polaroid-img-container"><img src="claire7.jpg" alt="Claire 7" onerror="this.src='https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?auto=format&fit=crop&w=600&q=80'"></div><div class="polaroid-caption">Best Smile</div></div>
+            <div class="polaroid"><div class="polaroid-img-container"><img src="claire8.jpg" alt="Claire 8" onerror="this.src='https://images.unsplash.com/photo-1508214751196-bcfd4ca60f91?auto=format&fit=crop&w=600&q=80'"></div><div class="polaroid-caption">Cutie</div></div>
+            <div class="polaroid"><div class="polaroid-img-container"><img src="claire9.jpg" alt="Claire 9" onerror="this.src='https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=600&q=80'"></div><div class="polaroid-caption">My World</div></div>
+            <div class="polaroid"><div class="polaroid-img-container"><img src="claire10.jpg" alt="Claire 10" onerror="this.src='https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=600&q=80'"></div><div class="polaroid-caption">Forever</div></div>
+        </div>
+    </div>
+
+    <!-- PAGE 2: YOUR HUBBY: VASU (10 Photos) -->
+    <div id="vasu-page" class="page-container">
+        <button class="back-btn" onclick="switchPage('home-page')">← Back to Hub</button>
+        <div class="page-header">
+            <h2>Your Hubby: Vasu</h2>
+            <p>Always yours ❤️</p>
+        </div>
+        <div class="polaroid-grid">
+            <div class="polaroid"><div class="polaroid-img-container"><img src="vasu1.jpg" alt="Vasu 1" onerror="this.src='https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=600&q=80'"></div><div class="polaroid-caption">Your Hubby</div></div>
+            <div class="polaroid"><div class="polaroid-img-container"><img src="vasu2.jpg" alt="Vasu 2" onerror="this.src='https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=600&q=80'"></div><div class="polaroid-caption">Lucky Guy</div></div>
+            <div class="polaroid"><div class="polaroid-img-container"><img src="vasu3.jpg" alt="Vasu 3" onerror="this.src='https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&w=600&q=80'"></div><div class="polaroid-caption">Thinking of You</div></div>
+            <div class="polaroid"><div class="polaroid-img-container"><img src="vasu4.jpg" alt="Vasu 4" onerror="this.src='https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?auto=format&fit=crop&w=600&q=80'"></div><div class="polaroid-caption">Chill Vibes</div></div>
+            <div class="polaroid"><div class="polaroid-img-container"><img src="vasu5.jpg" alt="Vasu 5" onerror="this.src='https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?auto=format&fit=crop&w=600&q=80'"></div><div class="polaroid-caption">All Yours</div></div>
+            <div class="polaroid"><div class="polaroid-img-container"><img src="vasu6.jpg" alt="Vasu 6" onerror="this.src='https://images.unsplash.com/photo-1522075469751-3a6694fb2f61?auto=format&fit=crop&w=600&q=80'"></div><div class="polaroid-caption">Smile</div></div>
+            <div class="polaroid"><div class="polaroid-img-container"><img src="vasu7.jpg" alt="Vasu 7" onerror="this.src='https://images.unsplash.com/photo-1501196354995-cbb51c65aaea?auto=format&fit=crop&w=600&q=80'"></div><div class="polaroid-caption">Best Days</div></div>
+            <div class="polaroid"><div class="polaroid-img-container"><img src="vasu8.jpg" alt="Vasu 8" onerror="this.src='https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=600&q=80'"></div><div class="polaroid-caption">Happy</div></div>
+            <div class="polaroid"><div class="polaroid-img-container"><img src="vasu9.jpg" alt="Vasu 9" onerror="this.src='https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=600&q=80'"></div><div class="polaroid-caption">Forever</div></div>
+            <div class="polaroid"><div class="polaroid-img-container"><img src="vasu10.jpg" alt="Vasu 10" onerror="this.src='https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=600&q=80'"></div><div class="polaroid-caption">Yours Truly</div></div>
+        </div>
+    </div>
+
+    <!-- PAGE 3: BUDDY (10 Photos Carousel) -->
+    <div id="buddy-page" class="page-container">
+        <button class="back-btn" onclick="switchPage('home-page')">← Back to Hub</button>
+        <div class="page-header">
+            <h2>Buddy</h2>
+            <p>Our precious little guy 🐾</p>
+        </div>
+        
+        <div class="carousel-wrapper">
+            <div class="carousel-container">
+                <div class="carousel-slide active"><img src="image.png" alt="Buddy 1" onerror="this.src='https://images.unsplash.com/photo-1543466835-00a7907e9de1?auto=format&fit=crop&w=600&q=80'"></div>
+                <div class="carousel-slide"><img src="image_2.png" alt="Buddy 2" onerror="this.src='https://images.unsplash.com/photo-1583511655857-d19b40a7a54e?auto=format&fit=crop&w=600&q=80'"></div>
+                <div class="carousel-slide"><img src="image_3.png" alt="Buddy 3" onerror="this.src='https://images.unsplash.com/photo-1537151608828-ea2b11777ee8?auto=format&fit=crop&w=600&q=80'"></div>
+                <div class="carousel-slide"><img src="image_4.png" alt="Buddy 4" onerror="this.src='https://images.unsplash.com/photo-1517849845537-4d257902454a?auto=format&fit=crop&w=600&q=80'"></div>
+                <div class="carousel-slide"><img src="image_5.png" alt="Buddy 5" onerror="this.src='https://images.unsplash.com/photo-1548199973-03cce0bbc87b?auto=format&fit=crop&w=600&q=80'"></div>
+                <div class="carousel-slide"><img src="image_6.png" alt="Buddy 6" onerror="this.src='https://images.unsplash.com/photo-1537151608828-ea2b11777ee8?auto=format&fit=crop&w=600&q=80'"></div>
+                <div class="carousel-slide"><img src="image_7.png" alt="Buddy 7" onerror="this.src='https://images.unsplash.com/photo-1543466835-00a7907e9de1?auto=format&fit=crop&w=600&q=80'"></div>
+                <div class="carousel-slide"><img src="image_8.png" alt="Buddy 8" onerror="this.src='https://images.unsplash.com/photo-1583511655857-d19b40a7a54e?auto=format&fit=crop&w=600&q=80'"></div>
+                <div class="carousel-slide"><img src="image_9.png" alt="Buddy 9" onerror="this.src='https://images.unsplash.com/photo-1548199973-03cce0bbc87b?auto=format&fit=crop&w=600&q=80'"></div>
+                <div class="carousel-slide"><img src="image_10.png" alt="Buddy 10" onerror="this.src='https://images.unsplash.com/photo-1517849845537-4d257902454a?auto=format&fit=crop&w=600&q=80'"></div>
+
+                <button class="carousel-btn prev-btn" onclick="moveSlide(-1)">❮</button>
+                <button class="carousel-btn next-btn" onclick="moveSlide(1)">❯</button>
+            </div>
+            <div class="carousel-caption" id="carousel-caption-text">Sweet snuggles with Buddy</div>
+            <div class="carousel-counter" id="carousel-counter-text">Photo 1 of 10</div>
+        </div>
+    </div>
+
+    <!-- PAGE 4: CALL HISTORY -->
+    <div id="history-page" class="page-container">
+        <button class="back-btn" onclick="switchPage('home-page')">← Back to Hub</button>
+        <div class="page-header">
+            <h2>Call History</h2>
+            <p>Our complete call log together 📞</p>
+        </div>
+        
+        <div class="timeline">
+            <div class="timeline-item"><div class="timeline-content"><h3>March 25, 2025</h3><p>12:48 PM / 3:55 PM</p></div><div class="timeline-dot"></div></div>
+            <div class="timeline-item"><div class="timeline-content"><h3>May 16, 2025</h3><p>1h 40m</p></div><div class="timeline-dot"></div></div>
+            <div class="timeline-item"><div class="timeline-content"><h3>June 22, 2025</h3><p>1h 46m • 22m</p></div><div class="timeline-dot"></div></div>
+            <div class="timeline-item"><div class="timeline-content"><h3>July 16, 2025</h3><p>1h 03m</p></div><div class="timeline-dot"></div></div>
+            <div class="timeline-item"><div class="timeline-content"><h3>September 13, 2025</h3><p>39m</p></div><div class="timeline-dot"></div></div>
+            <div class="timeline-item"><div class="timeline-content"><h3>October 21, 2025</h3><p>1h 20m</p></div><div class="timeline-dot"></div></div>
+            <div class="timeline-item"><div class="timeline-content"><h3>November 5, 2025</h3><p>5m</p></div><div class="timeline-dot"></div></div>
+            <div class="timeline-item"><div class="timeline-content"><h3>December 29, 2025</h3><p>33m</p></div><div class="timeline-dot"></div></div>
+            <div class="timeline-item"><div class="timeline-content"><h3>January 16, 2026</h3><p>6:49 PM</p></div><div class="timeline-dot"></div></div>
+            <div class="timeline-item"><div class="timeline-content"><h3>January 20, 2026</h3><p>1h 32m</p></div><div class="timeline-dot"></div></div>
+            <div class="timeline-item"><div class="timeline-content"><h3>January 24, 2026</h3><p>25m</p></div><div class="timeline-dot"></div></div>
+            <div class="timeline-item"><div class="timeline-content"><h3>February 28, 2026</h3><p>3m</p></div><div class="timeline-dot"></div></div>
+            <div class="timeline-item"><div class="timeline-content"><h3>March 6, 2026</h3><p>4m</p></div><div class="timeline-dot"></div></div>
+            <div class="timeline-item"><div class="timeline-content"><h3>March 15, 2026</h3><p>30m</p></div><div class="timeline-dot"></div></div>
+            <div class="timeline-item"><div class="timeline-content"><h3>March 16, 2026</h3><p>6m</p></div><div class="timeline-dot"></div></div>
+            <div class="timeline-item"><div class="timeline-content"><h3>March 19, 2026</h3><p>2:13 PM • 12:53 PM</p></div><div class="timeline-dot"></div></div>
+            <div class="timeline-item"><div class="timeline-content"><h3>March 20, 2026</h3><p>1h 11m • 1:07 PM</p></div><div class="timeline-dot"></div></div>
+            <div class="timeline-item"><div class="timeline-content"><h3>March 22, 2026</h3><p>2:29 PM</p></div><div class="timeline-dot"></div></div>
+            <div class="timeline-item"><div class="timeline-content"><h3>March 28, 2026</h3><p>35m</p></div><div class="timeline-dot"></div></div>
+            <div class="timeline-item"><div class="timeline-content"><h3>March 30, 2026</h3><p>6h 07m • 10h 40m ✨ <i>(Marathon Call)</i></p></div><div class="timeline-dot"></div></div>
+            <div class="timeline-item"><div class="timeline-content"><h3>April 3, 2026</h3><p>18m</p></div><div class="timeline-dot"></div></div>
+            <div class="timeline-item"><div class="timeline-content"><h3>April 20, 2026</h3><p>5:53 PM • 2:15 PM</p></div><div class="timeline-dot"></div></div>
+            <div class="timeline-item"><div class="timeline-content"><h3>April 27, 2026</h3><p>2h 41m</p></div><div class="timeline-dot"></div></div>
+            <div class="timeline-item"><div class="timeline-content"><h3>May 2, 2026</h3><p>5m</p></div><div class="timeline-dot"></div></div>
+            <div class="timeline-item"><div class="timeline-content"><h3>May 4, 2026</h3><p>7m</p></div><div class="timeline-dot"></div></div>
+            <div class="timeline-item"><div class="timeline-content"><h3>May 9, 2026</h3><p>33m • 1h 10m</p></div><div class="timeline-dot"></div></div>
+            <div class="timeline-item"><div class="timeline-content"><h3>May 19, 2026</h3><p>22m</p></div><div class="timeline-dot"></div></div>
+            <div class="timeline-item"><div class="timeline-content"><h3>May 21, 2026</h3><p>19m</p></div><div class="timeline-dot"></div></div>
+            <div class="timeline-item"><div class="timeline-content"><h3>May 25, 2026</h3><p>1h 08m</p></div><div class="timeline-dot"></div></div>
+            <div class="timeline-item"><div class="timeline-content"><h3>May 26, 2026</h3><p>1h 13m</p></div><div class="timeline-dot"></div></div>
+            <div class="timeline-item"><div class="timeline-content"><h3>May 29, 2026</h3><p>1h 32m</p></div><div class="timeline-dot"></div></div>
+            <div class="timeline-item"><div class="timeline-content"><h3>June 3, 2026</h3><p>32m</p></div><div class="timeline-dot"></div></div>
+            <div class="timeline-item"><div class="timeline-content"><h3>June 4, 2026</h3><p>45m • 6m</p></div><div class="timeline-dot"></div></div>
+            <div class="timeline-item"><div class="timeline-content"><h3>June 8, 2026</h3><p>30m • 18m • 6m</p></div><div class="timeline-dot"></div></div>
+            <div class="timeline-item"><div class="timeline-content"><h3>June 12, 2026</h3><p>37m</p></div><div class="timeline-dot"></div></div>
+            <div class="timeline-item"><div class="timeline-content"><h3>June 18, 2026</h3><p>43m</p></div><div class="timeline-dot"></div></div>
+            <div class="timeline-item"><div class="timeline-content"><h3>June 26, 2026</h3><p>55m • 58m</p></div><div class="timeline-dot"></div></div>
+            <div class="timeline-item"><div class="timeline-content"><h3>June 28, 2026</h3><p>20m • 1m • 21m</p></div><div class="timeline-dot"></div></div>
+            <div class="timeline-item"><div class="timeline-content"><h3>July 3, 2026</h3><p>1h 56m</p></div><div class="timeline-dot"></div></div>
+            <div class="timeline-item"><div class="timeline-content"><h3>July 15, 2026</h3><p>36m</p></div><div class="timeline-dot"></div></div>
+            <div class="timeline-item"><div class="timeline-content"><h3>July 18, 2026</h3><p>25m • 58s • 11m • 2m</p></div><div class="timeline-dot"></div></div>
+            <div class="timeline-item"><div class="timeline-content"><h3>July 22, 2026</h3><p>15m</p></div><div class="timeline-dot"></div></div>
+            <div class="timeline-item"><div class="timeline-content"><h3>July 25, 2026</h3><p>12m • 1m • 22s • 3s</p></div><div class="timeline-dot"></div></div>
+            <div class="timeline-item"><div class="timeline-content"><h3>August 20, 2026</h3><p>25m</p></div><div class="timeline-dot"></div></div>
+            <div class="timeline-item"><div class="timeline-content"><h3>August 21, 2026</h3><p>39m • 5m • 6m</p></div><div class="timeline-dot"></div></div>
+            <div class="timeline-item"><div class="timeline-content"><h3>August 22, 2026</h3><p>1h 38m • 8m • 6m • 10m • 47m • 26m</p></div><div class="timeline-dot"></div></div>
+            <div class="timeline-item"><div class="timeline-content"><h3>August 23, 2026</h3><p>19m</p></div><div class="timeline-dot"></div></div>
+            <div class="timeline-item"><div class="timeline-content"><h3>August 24, 2026</h3><p>4h 04m • 15m</p></div><div class="timeline-dot"></div></div>
+            <div class="timeline-item"><div class="timeline-content"><h3>September 3, 2026</h3><p>1h 18m</p></div><div class="timeline-dot"></div></div>
+            <div class="timeline-item"><div class="timeline-content"><h3>September 4, 2026</h3><p>6m • 21m</p></div><div class="timeline-dot"></div></div>
+            <div class="timeline-item"><div class="timeline-content"><h3>September 5, 2026</h3><p>5m • 8m</p></div><div class="timeline-dot"></div></div>
+            <div class="timeline-item"><div class="timeline-content"><h3>September 7, 2026</h3><p>1h 45m</p></div><div class="timeline-dot"></div></div>
+            <div class="timeline-item"><div class="timeline-content"><h3>September 9, 2026</h3><p>11m</p></div><div class="timeline-dot"></div></div>
+            <div class="timeline-item"><div class="timeline-content"><h3>September 10, 2026</h3><p>8m</p></div><div class="timeline-dot"></div></div>
+            <div class="timeline-item"><div class="timeline-content"><h3>Sunday</h3><p>37m • 8m</p></div><div class="timeline-dot"></div></div>
+            <div class="timeline-item"><div class="timeline-content"><h3>Tuesday</h3><p>1h 00m • 24m</p></div><div class="timeline-dot"></div></div>
+        </div>
+    </div>
+
+    <script>
+        function switchPage(pageId) {
+            const pages = document.querySelectorAll('.page-container');
+            pages.forEach(page => page.classList.remove('active'));
+            
+            const targetPage = document.getElementById(pageId);
+            if (targetPage) {
+                targetPage.classList.add('active');
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            }
+        }
+
+        let currentSlide = 0;
+        const slides = document.querySelectorAll('.carousel-slide');
+        const captions = [
+            "Sweet snuggles with Buddy",
+            "Cozy relaxing moments",
+            "Always exploring",
+            "Hiding under furniture!",
+            "Wrapped up like a burrito",
+            "Such a good boy",
+            "Playtime energy",
+            "Sleepy puppy eyes",
+            "Best little companion",
+            "Our favorite fuzzball"
+        ];
+
+        function moveSlide(direction) {
+            slides[currentSlide].classList.remove('active');
+            currentSlide = (currentSlide + direction + slides.length) % slides.length;
+            slides[currentSlide].classList.add('active');
+            
+            const captionEl = document.getElementById('carousel-caption-text');
+            const counterEl = document.getElementById('carousel-counter-text');
+            if(captionEl) {
+                captionEl.textContent = captions[currentSlide];
+            }
+            if(counterEl) {
+                counterEl.textContent = `Photo ${currentSlide + 1} of 10`;
+            }
+        }
+    </script>
+</body>
+</html>
+
