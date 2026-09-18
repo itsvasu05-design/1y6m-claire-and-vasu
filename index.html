@@ -484,13 +484,12 @@
                 <div class="carousel-slide"><img src="image_6.png" alt="Buddy 6" onerror="this.src='https://images.unsplash.com/photo-1537151608828-ea2b11777ee8?auto=format&fit=crop&w=600&q=80'"></div>
                 <div class="carousel-slide"><img src="image_7.png" alt="Buddy 7" onerror="this.src='https://images.unsplash.com/photo-1543466835-00a7907e9de1?auto=format&fit=crop&w=600&q=80'"></div>
                 <div class="carousel-slide"><img src="image_8.png" alt="Buddy 8" onerror="this.src='https://images.unsplash.com/photo-1583511655857-d19b40a7a54e?auto=format&fit=crop&w=600&q=80'"></div>
-                <div class="carousel-slide"><img src="image_10.png" alt="Buddy 9" onerror="this.src='https://images.unsplash.com/photo-1548199973-03cce0bbc87b?auto=format&fit=crop&w=600&q=80'"></div>
 
                 <button class="carousel-btn prev-btn" onclick="moveSlide(-1)">❮</button>
                 <button class="carousel-btn next-btn" onclick="moveSlide(1)">❯</button>
             </div>
             <div class="carousel-caption" id="carousel-caption-text">Buddy and Hubby</div>
-            <div class="carousel-counter" id="carousel-counter-text">Photo 1 of 9</div>
+            <div class="carousel-counter" id="carousel-counter-text">Photo 1 of 8</div>
         </div>
     </div>
 
@@ -576,17 +575,17 @@
 
         let currentSlide = 0;
         const slides = document.querySelectorAll('.carousel-slide');
+        
+        // EDIT THESE 9 CAPTIONS HERE:
         const captions = [
-            "Sweet snuggles with Buddy",
-            "Cozy relaxing moments",
-            "Always exploring",
-            "Hiding under furniture!",
-            "Wrapped up like a burrito",
-            "Such a good boy",
-            "Playtime energy",
-            "Sleepy puppy eyes",
-            "Best little companion",
-            "Our favorite fuzzball"
+            "Buddy and Hubby",
+            "Heh Buddy and Hubby again",
+            "Hai reyrey I see you, buddy sees you too",
+            "Boo its Buddy heh",
+            "Grrr grumpy Buddy",
+            "Ur favs in da dark",
+            "Tired Buddy under da bed",
+            "Oh wowie Buddy spoiled in human blankets",
         ];
 
         function moveSlide(direction) {
@@ -600,7 +599,7 @@
                 captionEl.textContent = captions[currentSlide];
             }
             if(counterEl) {
-                counterEl.textContent = `Photo ${currentSlide + 1} of 10`;
+                counterEl.textContent = `Photo ${currentSlide + 1} of 9`;
             }
         }
     </script>
